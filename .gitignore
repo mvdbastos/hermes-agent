@@ -23,6 +23,8 @@ act/
 .env.development
 .env.test
 .hermes-docker/
+# Persistent local state for the dedicated WhatsApp container; contains session credentials.
+.hermes-whatsapp/
 .notebooklm-home/
 .notebooklm-cli-venv/
 .notebooklm-playwright/

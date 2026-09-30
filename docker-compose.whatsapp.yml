@@ -1,0 +1,30 @@
+# Dedicated Hermes gateway container for WhatsApp.
+#
+# Build and run from the repository root:
+#   docker compose -f docker-compose.whatsapp.yml build --pull
+#   docker compose -f docker-compose.whatsapp.yml up -d
+#
+# Persistent WhatsApp credentials and Hermes state are stored in
+# ${HERMES_DATA_DIR:-./.hermes-whatsapp} and must not be committed.
+services:
+  whatsapp-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: local/hermes-agent-whatsapp:feature
+    container_name: hermes-whatsapp
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${HERMES_DATA_DIR:-./.hermes-whatsapp}:/opt/data
+    environment:
+      HERMES_UID: ${HERMES_UID:-10000}
+      HERMES_GID: ${HERMES_GID:-10000}
+      WHATSAPP_ENABLED: ${WHATSAPP_ENABLED:-true}
+      WHATSAPP_MODE: ${WHATSAPP_MODE:-bot}
+      WHATSAPP_DM_POLICY: ${WHATSAPP_DM_POLICY:-pairing}
+      WHATSAPP_ALLOWED_USERS: ${WHATSAPP_ALLOWED_USERS:-}
+      WHATSAPP_GROUP_POLICY: ${WHATSAPP_GROUP_POLICY:-pairing}
+      WHATSAPP_GROUP_ALLOWED_USERS: ${WHATSAPP_GROUP_ALLOWED_USERS:-}
+      WHATSAPP_REQUIRE_MENTION: ${WHATSAPP_REQUIRE_MENTION:-false}
+    command: ["gateway", "run"]
