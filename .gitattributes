@@ -9,6 +9,11 @@ uv.lock text eol=lf
 Dockerfile  text eol=lf
 *.dockerfile text eol=lf
 docker/entrypoint.sh text eol=lf
+# s6-overlay metadata and scripts are copied verbatim into the Linux image.
+# In particular, a CRLF in a `type` file is parsed as `longrun` plus a carriage return and makes
+# s6-rc compilation fail at container startup.
+docker/s6-rc.d/** text eol=lf
+docker/cont-init.d/** text eol=lf
 
 # Enforce LF for all source/text files. Windows editors and tools default to
 # CRLF; without normalization a Windows contributor's edit turns into a
